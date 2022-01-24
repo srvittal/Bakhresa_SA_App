@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, ScrollView, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, TextInput, Image, } from 'react-native';
+import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -10,8 +11,10 @@ export default function Login({ navigation }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   return (
-    <ScrollView contentContainerStyler={styles.container}>
-      <Image source={require('../assets/BAKHRESA_SA.png')} style={styles.logo}/>
+    <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
+
+      <Image source={require('../assets/BAKHRESA_SA.png')} style={styles.logo} />
+
       <TextInput
         style={styles.input}
         placeholder="Username"
@@ -21,6 +24,7 @@ export default function Login({ navigation }) {
         onChangeText={function (text) {
           setUsername(text);
         }}
+        returnKeyType={'next'}
       />
 
       <TextInput
@@ -33,6 +37,7 @@ export default function Login({ navigation }) {
         onChangeText={function (text) {
           setPassword(text);
         }}
+        returnKeyType='done'
       />
 
       <Button
@@ -66,10 +71,11 @@ export default function Login({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    alignContent: 'center',
     justifyContent: 'center',
+    alignContent: 'center',
+    paddingTop: Constants.statusBarHeight,
+    backgroundColor: '#FFFFFF',
+    padding: 8,
   },
   logo: {
     height: 128,

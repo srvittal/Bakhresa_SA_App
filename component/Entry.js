@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, TextInput, ScrollView, StyleSheet, Image } from 'react-native';
+import { Text, TextInput, ScrollView, View, StyleSheet, Image, } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
 import { NavigationContainer } from '@react-navigation/native';
@@ -10,11 +10,11 @@ function DateTime() {
     let Now = moment();
     const [Date, setDate] = React.useState(Now.format('DD-MMM-YY'));
     const [Time, setTime] = React.useState(Now.format('hh:mm A'));
-    setInterval(function(){
-    let Now = moment();
-    setDate(Now.format('DD-MMM-YY'));
-    setTime(Now.format('hh:mm A'));
-    },15000)
+    setInterval(function () {
+        let Now = moment();
+        setDate(Now.format('DD-MMM-YY'));
+        setTime(Now.format('hh:mm A'));
+    }, 15000)
     return {
         Date,
         Time,
@@ -30,11 +30,15 @@ export default function Entry({ route, navigation }) {
     const [name, setName] = React.useState('');
     const [conNum, setConNum] = React.useState('');
     const [vehReg, setVehReg] = React.useState('');
-    setInterval(DateTime(), 1000);
+    DateTime();
     return (
-        <ScrollView contentContainerStyler={styles.container}>
-            <Text style={styles.text}>Date:{DateTime().Date}</Text>
-            <Text style={styles.text}>Time:{DateTime().Time}</Text>
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
+
+            <View style={styles.CurrentCard}>
+                <Text style={styles.text}>Date:{DateTime().Date}</Text>
+                <Text style={styles.text}>Time:{DateTime().Time}</Text>
+            </View>
+
             <TextInput
                 style={styles.input}
                 placeholder="Driver's Name"
@@ -95,6 +99,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
+        alignContent: 'center',
         paddingTop: Constants.statusBarHeight,
         backgroundColor: '#FFFFFF',
         padding: 8,
@@ -102,14 +107,21 @@ const styles = StyleSheet.create({
     input: {
         fontSize: 20,
         height: 50,
+        width: 250,
         backgroundColor: '#F4B317',
         borderRadius: 20,
         margin: 5,
         padding: 10,
         textAlign: 'center',
+        alignSelf: 'center',
     },
     text: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+    },
+    CurrentCard: {
+        margin: 5,
+        padding: 10,
+        alignSelf: 'center',
     }
 });
