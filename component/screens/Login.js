@@ -1,10 +1,8 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, ScrollView, TextInput, Image, } from 'react-native';
+import { StyleSheet, ScrollView, TextInput, Image, } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
 export default function Login({ navigation }) {
@@ -13,7 +11,7 @@ export default function Login({ navigation }) {
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
-      <Image source={require('../assets/BAKHRESA_SA.png')} style={styles.logo} />
+      <Image source={require('../../assets/BAKHRESA_SA.png')} style={styles.logo} />
 
       <TextInput
         style={styles.input}

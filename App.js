@@ -3,8 +3,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, ScrollView, TextInput, Image, KeyboardAvoidingView, Platform, } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Login from './component/Login';
-import Entry from './component/Entry';
+import Login from './component/screens/Login';
+import Entry from './component/screens/Entry';
+import Submitted from './component/screens/Submitted';
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -23,6 +24,11 @@ export default function App() {
             name="Entry"
             component={Entry}
             options={{ title: 'Entry Details' }}
+          />
+          <Stack.Screen
+            name="Submitted"
+            component={Submitted}
+            options={{ title: 'Submitted Details' }}
           />
       </Stack.Navigator>
     </KeyboardAvoidingView>

@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Text, TextInput, ScrollView, View, StyleSheet, Image, } from 'react-native';
+import { Text, TextInput, ScrollView, View, StyleSheet, } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import moment from 'moment';
+import * as firestore from '../database/firestore';
 
 function DateTime() {
     let Now = moment();
@@ -30,7 +29,9 @@ export default function Entry({ route, navigation }) {
     const [name, setName] = React.useState('');
     const [conNum, setConNum] = React.useState('');
     const [vehReg, setVehReg] = React.useState('');
+    let EntryDetailsList = firestore.getEntryDetailsRT();
     DateTime();
+
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
@@ -88,7 +89,10 @@ export default function Entry({ route, navigation }) {
                 }}
                 titleStyle={{ fontWeight: 'bold', color: 'black' }}
                 onPress={function () {
-                    navigation.navigate('Entry');
+                    navigation.navigate('Submitted', {
+                    list: 'Test'
+                });
+                    console.log(EntryDetailsList)
                 }}
             />
         </ScrollView>
