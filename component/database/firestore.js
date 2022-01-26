@@ -79,13 +79,6 @@ async function authUser(username, password) {
         authPass = doc.data()["Password"];
         type = doc.data()["UserType"];
     });
-    // console.log(
-    //     "DBusername: ",authName,"\n",
-    //     "DBpassword: ",authPass,"\n",
-    //     "DBuserType: ",type,"\n",
-    //     "INusername: ",username,"\n",
-    //     "INpassword: ",password,"\n",
-    // )
     if (username == authName) {
         if (password == authPass) {
             return true;
