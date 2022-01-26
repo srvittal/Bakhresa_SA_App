@@ -30,18 +30,19 @@ async function getEntryDetailsRT() {                      /**real time updates *
 }
 
 async function getEntryDetails() {                                  /**once of update */
+    let entries = []
     const detailsCol = collection(db, 'EntryDetails');
     const detailsSnapshot = await getDocs(detailsCol);
     detailsSnapshot.forEach((doc) => {
-        console.log(
-            "Date; ", doc.data()["Date"], "\n",
-            "Time; ", doc.data()["Time"], "\n",
-            "Name: ", doc.data()["Name"], "\n",
-            "Contact No.: ", doc.data()["Contact_No"], "\n",
-            "Vehicle Reg: ", doc.data()["Vehicle_Reg"], "\n"
-        )
+        let e = {
+            Date: doc.data()["Date"],
+            Time: doc.data()["Time"],
+            Name: doc.data()["Vehicle_Reg"],
+            Vehicle_Reg: doc.data()["Name"]
+        };
+        entries.push(e);
     });
-    return detailsSnapshot
+    return entries
 }
 
 async function addEntryDetails(date, time, name, conNum, vehReg) {

@@ -38,7 +38,7 @@ export default function Login({ navigation }) {
                     alignSelf: 'center',
                 }}
                 titleStyle={{ fontWeight: 'bold', color: 'black' }}
-                onPress={() => navigation.navigate('Entry', {})}
+                onPress={() => navigation.navigate('Exit', {})}
             />
         </ScrollView>
     )

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './component/screens/Login';
 import Selection from './component/screens/Selection';
 import Entry from './component/screens/Entry';
+import Exit from './component/screens/Exit';
 import Submitted from './component/screens/Submitted';
 
 export default function App() {
@@ -35,6 +36,11 @@ export default function App() {
             name="Submitted"
             component={Submitted}
             options={{ title: 'Submitted Details' }}
+          />
+          <Stack.Screen
+            name="Exit"
+            component={Exit}
+            options={{ title: 'Exit' }}
           />
       </Stack.Navigator>
     </KeyboardAvoidingView>

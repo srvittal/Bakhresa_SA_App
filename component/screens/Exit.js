@@ -1,9 +1,26 @@
 import * as React from 'react';
 import { Text, TextInput, ScrollView, View, StyleSheet, } from 'react-native';
 import Constants from 'expo-constants';
-import { Button } from 'react-native-elements';
+import { Button, Card } from 'react-native-elements';
 import moment from 'moment';
 import * as firestore from '../database/firestore';
+
+function convert() {
+    let entry = [];
+
+    async function conversion() {
+        let arr = await firestore.getEntryDetails();
+        let objEntry = "";
+
+        for (let i = 0; i <= arr.length; i++) {
+            objEntry = Object.entries(arr[i]);
+            entry.push([objEntry[0][1],objEntry[1][1],objEntry[2][1],objEntry[3][1]]);
+        }
+    };
+
+    conversion();
+    return entry
+}
 
 function DateTime() {
     let Now = moment();
@@ -30,7 +47,19 @@ export default function Exit({ route, navigation }) {
     const [vehReg, setVehReg] = React.useState('');
     let date = DateTime().Date;
     let time = DateTime().Time;
-
+    let con = convert();
+    console.log(typeof(con))
+    // const entryArr = con.map((arr)=>{
+    //     console.log(arr)
+    //     // <Card>
+    //     //     <Text>Date:{arr[0]} Time:{arr[1]}</Text>
+    //     //     <Text>Reg:{arr[2]} Name:{arr[3]}</Text>
+    //     // </Card>
+    //      // const numbers = [1, 2, 3, 4, 5];
+    //     // const listItems = numbers.map((number) =>
+    //     //     <li>{number}</li>
+    //     // );
+    // });
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
@@ -38,40 +67,7 @@ export default function Exit({ route, navigation }) {
                 <Text style={styles.text}>Date:{date}</Text>
                 <Text style={styles.text}>Time:{time}</Text>
             </View>
-
-            <TextInput
-                style={styles.input}
-                placeholder="Driver's Name"
-                placeholderTextColor="#363A55"
-                textContentType="name"
-                defaultValue={name}
-                onChangeText={function (text) {
-                    setName(text);
-                }}
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Driver's Contact Number"
-                placeholderTextColor="#363A55"
-                textContentType="telephoneNumber"
-                defaultValue={conNum}
-                onChangeText={function (text) {
-                    setConNum(text);
-                }}
-            />
-
-            <TextInput
-                style={styles.input}
-                placeholder="Vehicle Registration"
-                placeholderTextColor="#363A55"
-                textContentType="none"
-                defaultValue={vehReg}
-                onChangeText={function (text) {
-                    setVehReg(text);
-                }}
-            />
-
+            {entryArr}
             <Button
                 title="Submit"
                 buttonStyle={{
@@ -89,13 +85,13 @@ export default function Exit({ route, navigation }) {
                 titleStyle={{ fontWeight: 'bold', color: 'black' }}
                 onPress={function () {
                     navigation.navigate('Submitted', {
-                    Date: date,
-                    Time: time, 
-                    Name: name,
-                    ConNum: conNum,
-                    VehReg: vehReg
-                });
-                firestore.addEntryDetails(date,time,name,conNum,vehReg);
+                        Date: date,
+                        Time: time,
+                        Name: name,
+                        ConNum: conNum,
+                        VehReg: vehReg
+                    });
+                    firestore.addEntryDetails(date, time, name, conNum, vehReg);
                 }}
             />
         </ScrollView>
