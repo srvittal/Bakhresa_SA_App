@@ -58,26 +58,27 @@ export default function Login({ navigation }) {
           alignSelf: 'center',
         }}
         titleStyle={{ fontWeight: 'bold', color: 'black' }}
-        onPress={async function () {
-          let authState = await firestore.authUser(username, password);
-          if (authState == true) {
-            navigation.navigate('Entry', {});
-          } else {
-            Alert.alert(
-              "Incorrect Username/Password",
-              "You have entered an incorrect username or password",
-              [
-                {
-                  text: "OK",
-                  onPress: function () {
-                    usernameInput.current.clear();
-                    passwordInput.current.clear();
-                  }
-                }
-              ]
-            )
-          }
-        }}
+        onPress={()=>navigation.navigate('Entry', {})}
+        // onPress={async function () {
+        //   let authState = await firestore.authUser(username, password);
+        //   if (authState == true) {
+        //     navigation.navigate('Entry', {});
+        //   } else {
+        //     Alert.alert(
+        //       "Incorrect Username/Password",
+        //       "You have entered an incorrect username or password",
+        //       [
+        //         {
+        //           text: "OK",
+        //           onPress: function () {
+        //             usernameInput.current.clear();
+        //             passwordInput.current.clear();
+        //           }
+        //         }
+        //       ]
+        //     )
+        //   }
+        // }}
       />
 
       <StatusBar style="auto" />

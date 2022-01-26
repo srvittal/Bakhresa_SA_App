@@ -1,12 +1,22 @@
 import * as React from 'react';
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Text, Image } from 'react-native';
 import Constants from 'expo-constants';
 
 export default function Submitted({ route, navigation }) {
-    const { list } = route.params;
+    const { Date, Time, Name, ConNum, VehReg } = route.params;
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
-           <Text>{list}</Text>
+
+            <View style={styles.CurrentCard}>
+                <Text style={styles.TextDetailsHd}>Vehicle Admitted</Text>
+                <Text style={styles.TextDetails}>Date of Entry: {Date}</Text>
+                <Text style={styles.TextDetails}>Time of Entry: {Time}</Text>
+                <Text style={styles.TextDetails}>Name of Entrant: {Name}</Text>
+                <Text style={styles.TextDetails}>Conatct Number: {ConNum}</Text>
+                <Text style={styles.TextDetails}>Vehicle Registration: {VehReg}</Text>
+            </View>
+
+            <Image source={require('../../assets/success.png')} style={styles.logo} />
         </ScrollView>
     );
 }
@@ -20,4 +30,26 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         padding: 8,
     },
+    logo: {
+        height: 130,
+        width: 130,
+        alignSelf: 'center',
+        margin: 5,
+    },
+    TextDetails: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    },
+    TextDetailsHd: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        alignSelf: 'center',
+        marginBottom: 10
+    },
+    CurrentCard: {
+        margin: 5,
+        padding: 10,
+        alignSelf: 'center',
+    }
 });

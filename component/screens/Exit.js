@@ -20,7 +20,7 @@ function DateTime() {
     };
 }
 
-export default function Entry({ route, navigation }) {
+export default function Exit({ route, navigation }) {
     const initialState = {
         name: '',
         vehReg: '',

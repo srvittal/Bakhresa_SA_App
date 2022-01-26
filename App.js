@@ -4,6 +4,7 @@ import { StyleSheet, Text, ScrollView, TextInput, Image, KeyboardAvoidingView, P
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Login from './component/screens/Login';
+import Selection from './component/screens/Selection';
 import Entry from './component/screens/Entry';
 import Submitted from './component/screens/Submitted';
 
@@ -14,11 +15,16 @@ export default function App() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Selection">
         <Stack.Screen
           name="Login"
           component={Login}
           options={{ title: 'Login' }}
+        />
+        <Stack.Screen
+          name="Selection"
+          component={Selection}
+          options={{ title: 'Selection' }}
         />
         <Stack.Screen
             name="Entry"
