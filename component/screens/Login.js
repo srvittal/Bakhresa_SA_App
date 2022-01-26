@@ -1,19 +1,23 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, ScrollView, TextInput, Image, } from 'react-native';
+import { StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
+import * as firestore from '../database/firestore';
 
 
 export default function Login({ navigation }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const usernameInput = React.useRef(null);
+  const passwordInput = React.useRef(null);
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
       <Image source={require('../../assets/BAKHRESA_SA.png')} style={styles.logo} />
 
       <TextInput
+        ref={usernameInput}
         style={styles.input}
         placeholder="Username"
         placeholderTextColor="#363A55"
@@ -26,6 +30,7 @@ export default function Login({ navigation }) {
       />
 
       <TextInput
+        ref={passwordInput}
         style={styles.input}
         placeholder="Password"
         secureTextEntry={true}
@@ -53,11 +58,25 @@ export default function Login({ navigation }) {
           alignSelf: 'center',
         }}
         titleStyle={{ fontWeight: 'bold', color: 'black' }}
-        onPress={function () {
-          navigation.navigate('Entry', {
-            username: username,
-            password: password,
-          });
+        onPress={async function () {
+          let authState = await firestore.authUser(username, password);
+          if (authState == true) {
+            navigation.navigate('Entry', {});
+          } else {
+            Alert.alert(
+              "Incorrect Username/Password",
+              "You have entered an incorrect username or password",
+              [
+                {
+                  text: "OK",
+                  onPress: function () {
+                    usernameInput.current.clear();
+                    passwordInput.current.clear();
+                  }
+                }
+              ]
+            )
+          }
         }}
       />
 
