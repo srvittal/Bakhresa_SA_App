@@ -25,19 +25,19 @@ export default function Entry({ route, navigation }) {
         name: '',
         vehReg: '',
     };
-    const { username, password } = route.params;
+    //const { username, password } = route.params;
     const [name, setName] = React.useState('');
     const [conNum, setConNum] = React.useState('');
     const [vehReg, setVehReg] = React.useState('');
-    let EntryDetailsList = firestore.getEntryDetailsRT();
-    DateTime();
+    let date = DateTime().Date;
+    let time = DateTime().Time;
 
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
             <View style={styles.CurrentCard}>
-                <Text style={styles.text}>Date:{DateTime().Date}</Text>
-                <Text style={styles.text}>Time:{DateTime().Time}</Text>
+                <Text style={styles.text}>Date:{date}</Text>
+                <Text style={styles.text}>Time:{time}</Text>
             </View>
 
             <TextInput
@@ -92,7 +92,8 @@ export default function Entry({ route, navigation }) {
                     navigation.navigate('Submitted', {
                     list: 'Test'
                 });
-                    console.log(EntryDetailsList)
+                firestore.addEntryDetails(date,time,name,conNum,vehReg);
+                firestore.getEntryDetailsRT();
                 }}
             />
         </ScrollView>
