@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getFirestore, collection, getDocs, onSnapshot, addDoc, where, query } from 'firebase/firestore';
+import { getFirestore, collection, getDocs, onSnapshot, doc, setDoc, where, query, deleteDoc } from 'firebase/firestore';
 import {
     apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId, measurementId,
 } from '@env';
@@ -30,35 +30,28 @@ async function getEntryDetailsRT() {                      /**real time updates *
 }
 
 async function getEntryDetails() {                                  /**once of update */
-    let entries = []
-    const detailsCol = collection(db, 'EntryDetails');
-    const detailsSnapshot = await getDocs(detailsCol);
-    detailsSnapshot.forEach((doc) => {
-        let e = {
-            Date: doc.data()["Date"],
-            Time: doc.data()["Time"],
-            Name: doc.data()["Vehicle_Reg"],
-            Vehicle_Reg: doc.data()["Name"]
-        };
-        entries.push(e);
-    });
-    return entries
+    try {
+        let entries = []
+        const detailsCol = collection(db, 'EntryDetails');
+        const detailsSnapshot = await getDocs(detailsCol);
+        detailsSnapshot.forEach((doc) => {
+            let e = [doc.data()["Date"],doc.data()["Time"],doc.data()["Vehicle_Reg"],doc.data()["Name"]];
+            entries.push(e);
+        });
+        return entries
+    } catch (e) {
+        console.error(e);
+    }
+}
+
+async function delEntryDetails(vehReg) {
+    const detailsCol = doc(db, 'EntryDetails', vehReg);
+    await deleteDoc(detailsCol);
 }
 
 async function addEntryDetails(date, time, name, conNum, vehReg) {
-    const detailsCol = collection(db, 'EntryDetails');
-    await addDoc(detailsCol, {
-        Date: date,
-        Time: time,
-        Name: name,
-        Contact_No: conNum,
-        Vehicle_Reg: vehReg,
-    })
-}
-
-async function delEntryDetails() {
-    const detailsCol = collection(db, 'EntryDetails');
-    await addDoc(detailsCol, {
+    const detailsCol = doc(db, 'EntryDetails', vehReg);
+    await setDoc(detailsCol, {
         Date: date,
         Time: time,
         Name: name,
@@ -96,5 +89,6 @@ export {
     getEntryDetailsRT,
     addEntryDetails,
     delEntryDetails,
-    authUser
+    authUser,
+    db
 }

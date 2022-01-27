@@ -1,25 +1,96 @@
 import * as React from 'react';
-import { Text, TextInput, ScrollView, View, StyleSheet, } from 'react-native';
+import { Text, TextInput, ScrollView, View, StyleSheet } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Button, Card } from 'react-native-elements';
 import moment from 'moment';
 import * as firestore from '../database/firestore';
+import { getFirestore, collection, getDocs, onSnapshot, addDoc, where, query } from 'firebase/firestore';
+
+
+// function convert() {
+//     const [entryArr, setArr] = React.useState([]);
+//     let loopArr = [];
+
+//     async function fetchData() {
+//         try {
+//             const data = await firestore.getEntryDetails();
+//             setArr(data);
+//         } catch (e) {
+//             console.error(e)
+//         }
+//     }
+
+//     fetchData();
+//         setTimeout(() => {
+//             let arr = entryArr;
+//             for (let i = 0; i < arr.length; i++) {
+//                 let eachArr = arr[i];
+//                 loopArr.push(
+//                     <View key={i}>
+//                         <Text style={{ textAlign: 'center' }}>Date:{eachArr[0]} Time:{eachArr[1]}</Text>
+//                         <Text style={{ textAlign: 'center' }}>Reg:{eachArr[2]} Name:{eachArr[3]}</Text>
+//                     </View>
+//                 )
+//             }
+//         }, 2500);
+
+//     return (
+//         <View>
+//             {loopArr}
+//         </View>
+//     )
+
+// }
 
 function convert() {
-    let entry = [];
+    const [entryArr, setArr] = React.useState([]);
+    let totalArr = []
 
-    async function conversion() {
-        let arr = await firestore.getEntryDetails();
-        let objEntry = "";
+    const fetchdata = async () => {
+        const detailsCol = collection(firestore.db, 'EntryDetails');
+        const detailsSnapshot = await getDocs(detailsCol);
+        detailsSnapshot.forEach(doc => {
+            totalArr.push(doc.data());
+            setArr(totalArr);
+        });
+    }
 
-        for (let i = 0; i <= arr.length; i++) {
-            objEntry = Object.entries(arr[i]);
-            entry.push([objEntry[0][1],objEntry[1][1],objEntry[2][1],objEntry[3][1]]);
-        }
-    };
+    React.useEffect(() => {
+        fetchdata();
+    }, [])
 
-    conversion();
-    return entry
+    return (
+        <View>
+            {entryArr && entryArr.map((entry) => {
+                return (
+                    <Card key={entry["Vehicle_Reg"]}>
+                        <Text style={{ textAlign: 'center' }}>Date:{entry["Date"]} Time:{entry["Time"]}</Text>
+                        <Text style={{ textAlign: 'center' }}>Reg:{entry["Vehicle_Reg"]} Name:{entry["Name"]}</Text>
+                        <Button
+                            title="Delete"
+                            buttonStyle={{
+                                backgroundColor: '#B9B9B9',
+                                borderWidth: 0,
+                                borderColor: 'transparent',
+                                borderRadius: 18,
+                            }}
+                            containerStyle={{
+                                width: 200,
+                                marginHorizontal: 50,
+                                marginVertical: 10,
+                                alignSelf: 'center',
+                            }}
+                            titleStyle={{ fontWeight: 'bold', color: 'black' }}
+                            onPress={function () {
+                                firestore.delEntryDetails(entry["Vehicle_Reg"]);
+                            }}
+                        />
+                    </Card>
+                )
+            })}
+        </View>
+    )
 }
 
 function DateTime() {
@@ -47,19 +118,7 @@ export default function Exit({ route, navigation }) {
     const [vehReg, setVehReg] = React.useState('');
     let date = DateTime().Date;
     let time = DateTime().Time;
-    let con = convert();
-    console.log(typeof(con))
-    // const entryArr = con.map((arr)=>{
-    //     console.log(arr)
-    //     // <Card>
-    //     //     <Text>Date:{arr[0]} Time:{arr[1]}</Text>
-    //     //     <Text>Reg:{arr[2]} Name:{arr[3]}</Text>
-    //     // </Card>
-    //      // const numbers = [1, 2, 3, 4, 5];
-    //     // const listItems = numbers.map((number) =>
-    //     //     <li>{number}</li>
-    //     // );
-    // });
+    const isFocused = useIsFocused();
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
@@ -67,7 +126,7 @@ export default function Exit({ route, navigation }) {
                 <Text style={styles.text}>Date:{date}</Text>
                 <Text style={styles.text}>Time:{time}</Text>
             </View>
-            {entryArr}
+            {convert()}
             <Button
                 title="Submit"
                 buttonStyle={{
