@@ -37,7 +37,7 @@ function convert() {
         <View style={{ alignSelf: 'center' }}>
             {entryArr.map((entry) => {
                 return (
-                    <Card key={entry["Vehicle_Reg"]}>
+                    <Card key={entry["Vehicle_Reg"]} ref={entry["Vehicle_Reg"]}>
                         <View style={{ flex: 1, justifyContent: "space-evenly" }}>
                             <View style={{ flex: 1, flexDirection: 'row', textAlign: "center" }}>
                                 <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Date: {entry["Date"]}</Text>
@@ -71,7 +71,7 @@ function convert() {
                 )
             })}
         </View>
-    );
+    )
 }
 
 function DateTime() {
@@ -90,13 +90,6 @@ function DateTime() {
 }
 
 export default function Exit({ route, navigation }) {
-    const initialState = {
-        name: '',
-        vehReg: '',
-    };
-    const [name, setName] = React.useState('');
-    const [conNum, setConNum] = React.useState('');
-    const [vehReg, setVehReg] = React.useState('');
     const [refreshPage, setRefreshPage] = React.useState('');
     let date = DateTime().Date;
     let time = DateTime().Time;

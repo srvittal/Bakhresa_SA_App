@@ -16,7 +16,7 @@ export default function App() {
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-      <Stack.Navigator initialRouteName="Exit">
+      <Stack.Navigator initialRouteName="Selection">
         <Stack.Screen
           name="Login"
           component={Login}
