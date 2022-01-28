@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { Text, TextInput, ScrollView, View, StyleSheet } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { Text, ScrollView, View, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 import { Button, Card } from 'react-native-elements';
 import moment from 'moment';
 import * as firestore from '../database/firestore';
-import { getFirestore, collection, getDocs, onSnapshot, addDoc, where, query } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 
 function convert() {
     const [entryArr, setArr] = React.useState([]);
@@ -35,18 +34,18 @@ function convert() {
     }, []);
 
     return (
-        <View style={{alignSelf: 'center'}}>
-            {entryArr && entryArr.map((entry) => {
+        <View style={{ alignSelf: 'center' }}>
+            {entryArr.map((entry) => {
                 return (
                     <Card key={entry["Vehicle_Reg"]}>
-                        <View style={{flex:1, justifyContent:"space-evenly"}}>
-                            <View style={{flex: 1, flexDirection:'row', textAlign: "center"}}>
-                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Date: {entry["Date"]}</Text>
-                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Time: {entry["Time"]}</Text>
+                        <View style={{ flex: 1, justifyContent: "space-evenly" }}>
+                            <View style={{ flex: 1, flexDirection: 'row', textAlign: "center" }}>
+                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Date: {entry["Date"]}</Text>
+                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Time: {entry["Time"]}</Text>
                             </View>
-                            <View style={{flex: 1, flexDirection:'row', textAlign: "center"}}> 
-                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Reg: {entry["Vehicle_Reg"]}</Text>
-                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Name: {entry["Name"]}</Text>
+                            <View style={{ flex: 1, flexDirection: 'row', textAlign: "center" }}>
+                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Reg: {entry["Vehicle_Reg"]}</Text>
+                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Name: {entry["Name"]}</Text>
                             </View>
                         </View>
                         <Button
@@ -72,7 +71,7 @@ function convert() {
                 )
             })}
         </View>
-    )
+    );
 }
 
 function DateTime() {
