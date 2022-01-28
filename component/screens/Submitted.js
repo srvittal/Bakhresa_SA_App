@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 
 export default function Submitted({ route, navigation }) {
     const { Date, Time, Name, ConNum, VehReg } = route.params;
+    setTimeout(function () {navigation.navigate('Selection', {})},2000)
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 

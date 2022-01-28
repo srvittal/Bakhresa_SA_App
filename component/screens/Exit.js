@@ -7,42 +7,6 @@ import moment from 'moment';
 import * as firestore from '../database/firestore';
 import { getFirestore, collection, getDocs, onSnapshot, addDoc, where, query } from 'firebase/firestore';
 
-
-// function convert() {
-//     const [entryArr, setArr] = React.useState([]);
-//     let loopArr = [];
-
-//     async function fetchData() {
-//         try {
-//             const data = await firestore.getEntryDetails();
-//             setArr(data);
-//         } catch (e) {
-//             console.error(e)
-//         }
-//     }
-
-//     fetchData();
-//         setTimeout(() => {
-//             let arr = entryArr;
-//             for (let i = 0; i < arr.length; i++) {
-//                 let eachArr = arr[i];
-//                 loopArr.push(
-//                     <View key={i}>
-//                         <Text style={{ textAlign: 'center' }}>Date:{eachArr[0]} Time:{eachArr[1]}</Text>
-//                         <Text style={{ textAlign: 'center' }}>Reg:{eachArr[2]} Name:{eachArr[3]}</Text>
-//                     </View>
-//                 )
-//             }
-//         }, 2500);
-
-//     return (
-//         <View>
-//             {loopArr}
-//         </View>
-//     )
-
-// }
-
 function convert() {
     const [entryArr, setArr] = React.useState([]);
     let totalArr = []
@@ -56,29 +20,47 @@ function convert() {
         });
     }
 
+    const fetchdataRT = () => {
+        const q = collection(firestore.db, "EntryDetails");
+        const detailsCol = onSnapshot(q, (query) => {
+            query.forEach((doc) => {
+                totalArr.push(doc.data());
+                setArr(totalArr);
+            })
+        })
+    }
+
     React.useEffect(() => {
-        fetchdata();
-    }, [])
+        fetchdataRT();
+    }, []);
 
     return (
-        <View>
+        <View style={{alignSelf: 'center'}}>
             {entryArr && entryArr.map((entry) => {
                 return (
                     <Card key={entry["Vehicle_Reg"]}>
-                        <Text style={{ textAlign: 'center' }}>Date:{entry["Date"]} Time:{entry["Time"]}</Text>
-                        <Text style={{ textAlign: 'center' }}>Reg:{entry["Vehicle_Reg"]} Name:{entry["Name"]}</Text>
+                        <View style={{flex:1, justifyContent:"space-evenly"}}>
+                            <View style={{flex: 1, flexDirection:'row', textAlign: "center"}}>
+                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Date: {entry["Date"]}</Text>
+                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Time: {entry["Time"]}</Text>
+                            </View>
+                            <View style={{flex: 1, flexDirection:'row', textAlign: "center"}}> 
+                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Reg: {entry["Vehicle_Reg"]}</Text>
+                                <Text style={{flex: 3, flexDirection:'row', fontWeight: 'bold' }}>Name: {entry["Name"]}</Text>
+                            </View>
+                        </View>
                         <Button
-                            title="Delete"
+                            title="Exit"
                             buttonStyle={{
-                                backgroundColor: '#B9B9B9',
+                                backgroundColor: '#f70d1a',
                                 borderWidth: 0,
                                 borderColor: 'transparent',
                                 borderRadius: 18,
                             }}
                             containerStyle={{
-                                width: 200,
-                                marginHorizontal: 50,
-                                marginVertical: 10,
+                                width: 100,
+                                marginHorizontal: 25,
+                                marginVertical: 5,
                                 alignSelf: 'center',
                             }}
                             titleStyle={{ fontWeight: 'bold', color: 'black' }}
@@ -116,9 +98,16 @@ export default function Exit({ route, navigation }) {
     const [name, setName] = React.useState('');
     const [conNum, setConNum] = React.useState('');
     const [vehReg, setVehReg] = React.useState('');
+    const [refreshPage, setRefreshPage] = React.useState('');
     let date = DateTime().Date;
     let time = DateTime().Time;
-    const isFocused = useIsFocused();
+    setInterval(function () {
+        if (refreshPage == "") {
+            setRefreshPage("refresh");
+        } else {
+            setRefreshPage("");
+        }
+    }, 1000);
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
 
@@ -128,7 +117,7 @@ export default function Exit({ route, navigation }) {
             </View>
             {convert()}
             <Button
-                title="Submit"
+                title="Refresh"
                 buttonStyle={{
                     backgroundColor: '#B9B9B9',
                     borderWidth: 0,
@@ -143,14 +132,11 @@ export default function Exit({ route, navigation }) {
                 }}
                 titleStyle={{ fontWeight: 'bold', color: 'black' }}
                 onPress={function () {
-                    navigation.navigate('Submitted', {
-                        Date: date,
-                        Time: time,
-                        Name: name,
-                        ConNum: conNum,
-                        VehReg: vehReg
-                    });
-                    firestore.addEntryDetails(date, time, name, conNum, vehReg);
+                    if (refreshPage == "") {
+                        setRefreshPage("refresh");
+                    } else {
+                        setRefreshPage("");
+                    }
                 }}
             />
         </ScrollView>
