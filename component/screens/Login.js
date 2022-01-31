@@ -58,7 +58,7 @@ export default function Login({ navigation }) {
           alignSelf: 'center',
         }}
         titleStyle={{ fontWeight: 'bold', color: 'black' }}
-        onPress={()=>navigation.navigate('Entry', {})}
+        onPress={()=>navigation.navigate('Selection', {})}
         // onPress={async function () {
         //   let authState = await firestore.authUser(username, password);
         //   if (authState == true) {

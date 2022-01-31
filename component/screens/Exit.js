@@ -8,6 +8,7 @@ import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 
 function convert() {
     const [entryArr, setArr] = React.useState([]);
+    const [deleteBtn, setdeleteBtn] = React.useState('false');
     let totalArr = []
 
     const fetchdata = async () => {
@@ -19,34 +20,22 @@ function convert() {
         });
     }
 
-    const fetchdataRT = () => {
-        const q = collection(firestore.db, "EntryDetails");
-        const detailsCol = onSnapshot(q, (query) => {
-            query.forEach((doc) => {
-                totalArr.push(doc.data());
-                setArr(totalArr);
-            })
-        })
-    }
-
     React.useEffect(() => {
-        fetchdataRT();
-    }, []);
+        fetchdata();
+    }, [deleteBtn]);
 
     return (
-        <View style={{ alignSelf: 'center' }}>
+        <View>
             {entryArr.map((entry) => {
                 return (
-                    <Card key={entry["Vehicle_Reg"]} ref={entry["Vehicle_Reg"]}>
-                        <View style={{ flex: 1, justifyContent: "space-evenly" }}>
-                            <View style={{ flex: 1, flexDirection: 'row', textAlign: "center" }}>
-                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Date: {entry["Date"]}</Text>
-                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Time: {entry["Time"]}</Text>
-                            </View>
-                            <View style={{ flex: 1, flexDirection: 'row', textAlign: "center" }}>
-                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Reg: {entry["Vehicle_Reg"]}</Text>
-                                <Text style={{ flex: 3, flexDirection: 'row', fontWeight: 'bold' }}>Name: {entry["Name"]}</Text>
-                            </View>
+                    <View style={styles.col} key={entry["Vehicle_Reg"]}>
+                        <View style={styles.row}>
+                            <Text style={styles.data}>Reg: {entry["Vehicle_Reg"]}</Text>
+                            <Text style={styles.data}>Name: {entry["Name"]}</Text>
+                        </View>
+                        <View style={styles.row}>
+                            <Text style={styles.data}>Date: {entry["Date"]}</Text>
+                            <Text style={styles.data}>Time: {entry["Time"]}</Text>
                         </View>
                         <Button
                             title="Exit"
@@ -57,17 +46,23 @@ function convert() {
                                 borderRadius: 18,
                             }}
                             containerStyle={{
-                                width: 100,
-                                marginHorizontal: 25,
-                                marginVertical: 5,
+                                width: 'auto',
+                                margin: 1,
                                 alignSelf: 'center',
+                                paddingBottom: 4
                             }}
-                            titleStyle={{ fontWeight: 'bold', color: 'black' }}
+                            titleStyle={{ fontWeight: 'bold', color: 'black', padding: 1 }}
                             onPress={function () {
                                 firestore.delEntryDetails(entry["Vehicle_Reg"]);
+                                if (deleteBtn == false) {
+                                    setdeleteBtn(true)
+                                } else {
+                                    setdeleteBtn(false)
+                                }
+
                             }}
                         />
-                    </Card>
+                    </View>
                 )
             })}
         </View>
@@ -102,7 +97,6 @@ export default function Exit({ route, navigation }) {
     }, 1000);
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
-
             <View style={styles.CurrentCard}>
                 <Text style={styles.text}>Date:{date}</Text>
                 <Text style={styles.text}>Time:{time}</Text>
@@ -163,5 +157,24 @@ const styles = StyleSheet.create({
         margin: 5,
         padding: 10,
         alignSelf: 'center',
+    },
+    col: {
+        width: '90%',
+        flexDirection: 'column',
+        borderWidth: 1.5,
+        borderRadius: 1,
+        borderColor: '#e1e8ee',
+        alignSelf: 'center',
+        marginBottom: 5,
+    },
+    row: {
+        flexDirection: 'row',
+        padding: 5,
+        textAlign: 'center'
+    },
+    data: {
+        flex: 1,
+        fontSize: 20,
+        fontWeight: 'bold'
     }
 });
