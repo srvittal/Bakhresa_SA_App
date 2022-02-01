@@ -27,6 +27,8 @@
     },
     "web": {
       "favicon": "./assets/BAKHRESA_SA.png"
-    }
+    },
+    "description": "",
+    "githubUrl": "https://github.com/srvittal/Bakhresa_SA_App"
   }
 }

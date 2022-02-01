@@ -2,9 +2,8 @@ import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
 import Constants from 'expo-constants';
-import { Button } from 'react-native-elements';
 import * as firestore from '../database/firestore';
-
+import Btn from '../btn'
 
 export default function Login({ navigation }) {
   const [username, setUsername] = React.useState('');
@@ -43,42 +42,30 @@ export default function Login({ navigation }) {
         returnKeyType='done'
       />
 
-      <Button
+      <Btn
         title="Log In"
-        buttonStyle={{
-          backgroundColor: '#B9B9B9',
-          borderWidth: 0,
-          borderColor: 'transparent',
-          borderRadius: 18,
+        width={200} color="grey"
+        onPress={async function () {
+          let authState = await firestore.authUser(username, password);
+          if (authState == true) {
+            navigation.navigate('Selection', {});
+          } else {
+            Alert.alert(
+              "Incorrect Username/Password",
+              "You have entered an incorrect username or password",
+              [
+                {
+                  text: "OK",
+                  onPress: function () {
+                    usernameInput.current.clear();
+                    passwordInput.current.clear();
+                  }
+                }
+              ]
+            )
+            alert("You have entered an incorrect username or password")
+          }
         }}
-        containerStyle={{
-          width: 200,
-          marginHorizontal: 50,
-          marginVertical: 10,
-          alignSelf: 'center',
-        }}
-        titleStyle={{ fontWeight: 'bold', color: 'black' }}
-        onPress={()=>navigation.navigate('Selection', {})}
-        // onPress={async function () {
-        //   let authState = await firestore.authUser(username, password);
-        //   if (authState == true) {
-        //     navigation.navigate('Entry', {});
-        //   } else {
-        //     Alert.alert(
-        //       "Incorrect Username/Password",
-        //       "You have entered an incorrect username or password",
-        //       [
-        //         {
-        //           text: "OK",
-        //           onPress: function () {
-        //             usernameInput.current.clear();
-        //             passwordInput.current.clear();
-        //           }
-        //         }
-        //       ]
-        //     )
-        //   }
-        // }}
       />
 
       <StatusBar style="auto" />

@@ -23,7 +23,6 @@ async function getEntryDetailsRT() {                      /**real time updates *
     const q = collection(db, "EntryDetails");
     const detailsCol = onSnapshot(q, (query) => {
         query.forEach((doc) => {
-            console.log("Current data: ", doc.data());
         })
     })
     return detailsCol;
@@ -35,7 +34,7 @@ async function getEntryDetails() {                                  /**once of u
         const detailsCol = collection(db, 'EntryDetails');
         const detailsSnapshot = await getDocs(detailsCol);
         detailsSnapshot.forEach((doc) => {
-            let e = [doc.data()["Date"],doc.data()["Time"],doc.data()["Vehicle_Reg"],doc.data()["Name"]];
+            let e = [doc.data()["Date"], doc.data()["Time"], doc.data()["Vehicle_Reg"], doc.data()["Name"]];
             entries.push(e);
         });
         return entries
@@ -73,15 +72,20 @@ async function authUser(username, password) {
         authPass = doc.data()["Password"];
         type = doc.data()["UserType"];
     });
-    if (username == authName) {
-        if (password == authPass) {
-            return true;
-        } else {
-            return false;
-        }
-    } else {
+    if (username == '' || password == '') {
         return false
-    };
+    } else {
+        if (username == authName) {
+            if (password == authPass) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false
+        };
+    }
+
 }
 
 export {

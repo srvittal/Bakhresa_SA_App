@@ -2,43 +2,23 @@ import * as React from 'react';
 import { StyleSheet, ScrollView, TextInput, Image, Alert } from 'react-native';
 import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
+import Btn from '../btn'
 
 export default function Login({ navigation }) {
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
-            <Button
+            <Btn
                 title="Admit Vehicle"
-                buttonStyle={{
-                    backgroundColor: '#B9B9B9',
-                    borderWidth: 0,
-                    borderColor: 'transparent',
-                    borderRadius: 18,
-                }}
-                containerStyle={{
-                    width: 200,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    alignSelf: 'center',
-                }}
-                titleStyle={{ fontWeight: 'bold', color: 'black' }}
-                onPress={() => navigation.navigate('Entry', {})}
+                color="grey"
+                width={200}
+                onPress={function () { navigation.navigate('Entry', {}) }}
             />
-            <Button
+
+            <Btn
                 title="Vehicle Exit"
-                buttonStyle={{
-                    backgroundColor: '#B9B9B9',
-                    borderWidth: 0,
-                    borderColor: 'transparent',
-                    borderRadius: 18,
-                }}
-                containerStyle={{
-                    width: 200,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    alignSelf: 'center',
-                }}
-                titleStyle={{ fontWeight: 'bold', color: 'black' }}
-                onPress={() => navigation.navigate('Exit', {})}
+                color="grey"
+                width={200}
+                onPress={function () { navigation.navigate('Exit', {}) }}
             />
         </ScrollView>
     )

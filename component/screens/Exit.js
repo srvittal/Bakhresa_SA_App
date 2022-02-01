@@ -5,10 +5,11 @@ import { Button, Card } from 'react-native-elements';
 import moment from 'moment';
 import * as firestore from '../database/firestore';
 import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import Btn from '../btn'
 
 function convert() {
     const [entryArr, setArr] = React.useState([]);
-    const [deleteBtn, setdeleteBtn] = React.useState('false');
+    const [deleteBtn, setdeleteBtn] = React.useState(false);
     let totalArr = []
 
     const fetchdata = async () => {
@@ -37,34 +38,23 @@ function convert() {
                             <Text style={styles.data}>Date: {entry["Date"]}</Text>
                             <Text style={styles.data}>Time: {entry["Time"]}</Text>
                         </View>
-                        <Button
+                        <Btn
                             title="Exit"
-                            buttonStyle={{
-                                backgroundColor: '#f70d1a',
-                                borderWidth: 0,
-                                borderColor: 'transparent',
-                                borderRadius: 18,
-                            }}
-                            containerStyle={{
-                                width: 'auto',
-                                margin: 1,
-                                alignSelf: 'center',
-                                paddingBottom: 4
-                            }}
-                            titleStyle={{ fontWeight: 'bold', color: 'black', padding: 1 }}
+                            color="red"
                             onPress={function () {
                                 firestore.delEntryDetails(entry["Vehicle_Reg"]);
-                                if (deleteBtn == false) {
-                                    setdeleteBtn(true)
-                                } else {
-                                    setdeleteBtn(false)
-                                }
-
-                            }}
+                                deleteBtn == false ? setdeleteBtn(true) : setdeleteBtn(false)
+                            }} 
                         />
                     </View>
                 )
             })}
+            <Btn
+                title="Refresh"
+                color="grey"
+                width={200}
+                onPress={function () {deleteBtn == false ? setdeleteBtn(true) : setdeleteBtn(false)}} 
+            />
         </View>
     )
 }
@@ -85,16 +75,14 @@ function DateTime() {
 }
 
 export default function Exit({ route, navigation }) {
-    const [refreshPage, setRefreshPage] = React.useState('');
+    const [refreshPage, setRefreshPage] = React.useState(false);
     let date = DateTime().Date;
     let time = DateTime().Time;
+
     setInterval(function () {
-        if (refreshPage == "") {
-            setRefreshPage("refresh");
-        } else {
-            setRefreshPage("");
-        }
+        refreshPage == false ? setRefreshPage(true) : setRefreshPage(false)
     }, 1000);
+
     return (
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps='handled'>
             <View style={styles.CurrentCard}>
@@ -102,29 +90,6 @@ export default function Exit({ route, navigation }) {
                 <Text style={styles.text}>Time:{time}</Text>
             </View>
             {convert()}
-            <Button
-                title="Refresh"
-                buttonStyle={{
-                    backgroundColor: '#B9B9B9',
-                    borderWidth: 0,
-                    borderColor: 'transparent',
-                    borderRadius: 18,
-                }}
-                containerStyle={{
-                    width: 200,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    alignSelf: 'center',
-                }}
-                titleStyle={{ fontWeight: 'bold', color: 'black' }}
-                onPress={function () {
-                    if (refreshPage == "") {
-                        setRefreshPage("refresh");
-                    } else {
-                        setRefreshPage("");
-                    }
-                }}
-            />
         </ScrollView>
     );
 }
