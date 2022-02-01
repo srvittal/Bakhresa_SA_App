@@ -4,6 +4,7 @@ import Constants from 'expo-constants';
 import { Button } from 'react-native-elements';
 import moment from 'moment';
 import * as firestore from '../database/firestore';
+import Btn from '../btn'
 
 function DateTime() {
     let Now = moment();
@@ -20,11 +21,7 @@ function DateTime() {
     };
 }
 
-export default function Entry({ route, navigation }) {
-    const initialState = {
-        name: '',
-        vehReg: '',
-    };
+export default function Entry({ navigation }) {
     const [name, setName] = React.useState('');
     const [conNum, setConNum] = React.useState('');
     const [vehReg, setVehReg] = React.useState('');
@@ -72,30 +69,19 @@ export default function Entry({ route, navigation }) {
                 }}
             />
 
-            <Button
+            <Btn
                 title="Submit"
-                buttonStyle={{
-                    backgroundColor: '#B9B9B9',
-                    borderWidth: 0,
-                    borderColor: 'transparent',
-                    borderRadius: 18,
-                }}
-                containerStyle={{
-                    width: 200,
-                    marginHorizontal: 50,
-                    marginVertical: 10,
-                    alignSelf: 'center',
-                }}
-                titleStyle={{ fontWeight: 'bold', color: 'black' }}
+                color="grey"
+                width={200}
                 onPress={function () {
                     navigation.navigate('Submitted', {
-                    Date: date,
-                    Time: time, 
-                    Name: name,
-                    ConNum: conNum,
-                    VehReg: vehReg
-                });
-                firestore.addEntryDetails(date,time,name,conNum,vehReg);
+                        Date: date,
+                        Time: time,
+                        Name: name,
+                        ConNum: conNum,
+                        VehReg: vehReg
+                    });
+                    firestore.addEntryDetails(date, time, name, conNum, vehReg);
                 }}
             />
         </ScrollView>
